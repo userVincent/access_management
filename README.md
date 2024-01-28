@@ -6,6 +6,9 @@
 The Master Node is a central component of the Secure Access Management Solution for lab environments. This system is designed to manage and control access to various devices in a laboratory setting through communication with multiple Slave Nodes.
 
 ### Master Node Functionality
+
+![Software Architecture](software_architecture.png)
+
 The base functionality of the Master Node involves communicating with multiple Slave Nodes using the nRF24L01. It is responsible for determining whether a key has access to a device by consulting a local database and subsequently granting or denying access as appropriate.
 
 For non-essential functionality, the Master Node supports Wi-Fi connectivity, enabling remote control, user authentication, and session management. This allows authorized users to manage devices, access levels, and the local database. Additionally, the Master Node offers logging capabilities with accurate timestamps and ensures regular log uploads to a remote database, handling local log deletions after successful transfers.
