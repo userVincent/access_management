@@ -15,7 +15,7 @@ For non-essential functionality, the Master Node supports Wi-Fi connectivity, en
 
 Beyond these basic functionalities, the Master Node encompasses several design philosophies, including robustness, scalability, security, and task management. The software is designed to gracefully handle errors and edge cases, ensuring reliable operation. It is capable of accommodating an increasing number of Slave Nodes and user interactions without compromising performance. Security measures are implemented to prevent unauthorized access and safeguard sensitive data. Lastly, the Master Node utilizes a multitasking architecture, such as FreeRTOS, to efficiently manage various tasks and processes.
 
-For more detailed information, refer to the "Secure Access Management Solution for Lab Environments" PDF.
+For more detailed information, refer to the [Secure Access Management Solution for Lab Environments](SecureAccessManagementSolutionForLabEnvironments.pdf).
 
 ## Hardware and Software Requirements
 
@@ -32,4 +32,4 @@ For more detailed information, refer to the "Secure Access Management Solution f
 
 ## Reference
 
-For detailed technical information, design philosophies, and step-by-step instructions, refer to the "Secure Access Management Solution for Lab Environments" [PDF](SecureAccessManagementSolutionForLabEnvironments.pdf), specifically the Master Node sections.
+For detailed technical information, design philosophies, and step-by-step instructions, refer to the [Secure Access Management Solution for Lab Environments](SecureAccessManagementSolutionForLabEnvironments.pdf), specifically the Master Node sections.
