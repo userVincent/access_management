@@ -1,0 +1,194 @@
+menu "Example Configuration"
+
+    config EXAMPLE_IPV4
+        bool "IPV4"
+        default y
+
+    config EXAMPLE_IPV6
+        bool "IPV6"
+        default n
+        select EXAMPLE_CONNECT_IPV6
+
+    config EXAMPLE_PORT
+        int "Port"
+        range 0 65535
+        default 3333
+        help
+            Local port the example server will listen on.
+
+    config EXAMPLE_KEEPALIVE_IDLE
+        int "TCP keep-alive idle time(s)"
+        default 5
+        help
+            Keep-alive idle time. In idle time without receiving any data from peer, will send keep-alive probe packet
+
+    config EXAMPLE_KEEPALIVE_INTERVAL
+        int "TCP keep-alive interval time(s)"
+        default 5
+        help
+            Keep-alive probe packet interval time.
+
+    config EXAMPLE_KEEPALIVE_COUNT
+        int "TCP keep-alive packet retry send counts"
+        default 3
+        help
+            Keep-alive probe packet retry count.
+endmenu
+
+menu "nRF24L01 Configuration"
+
+	config GPIO_RANGE_MAX
+		int
+		default 33 if IDF_TARGET_ESP32
+		default 46 if IDF_TARGET_ESP32S2
+		default 48 if IDF_TARGET_ESP32S3
+		default 18 if IDF_TARGET_ESP32C2
+		default 19 if IDF_TARGET_ESP32C3
+
+	config MISO_GPIO
+		int "MISO GPIO number"
+		range 0 GPIO_RANGE_MAX
+		default 19 if IDF_TARGET_ESP32
+		default 37 if IDF_TARGET_ESP32S2 || IDF_TARGET_ESP32S3
+		default  4 if IDF_TARGET_ESP32C3 || IDF_TARGET_ESP32C2
+		help
+			GPIO number (IOxx) to SPI MISO.
+			Some GPIOs are used for other purposes (flash connections, etc.) and cannot be used to MISO.
+			On the ESP32, GPIOs 35-39 are input-only so cannot be used as outputs.
+			On the ESP32-S2, GPIO 46 is input-only so cannot be used as outputs.
+
+	config SCLK_GPIO
+		int "SCLK GPIO number"
+		range 0 GPIO_RANGE_MAX
+		default 18 if IDF_TARGET_ESP32
+		default 36 if IDF_TARGET_ESP32S2 || IDF_TARGET_ESP32S3
+		default  3 if IDF_TARGET_ESP32C3 || IDF_TARGET_ESP32C2
+		help
+			GPIO number (IOxx) to SPI SCLK.
+			Some GPIOs are used for other purposes (flash connections, etc.) and cannot be used to SCLK.
+			On the ESP32, GPIOs 35-39 are input-only so cannot be used as outputs.
+			On the ESP32-S2, GPIO 46 is input-only so cannot be used as outputs.
+
+	config MOSI_GPIO
+		int "MOSI GPIO number"
+		range 0 GPIO_RANGE_MAX
+		default 23 if IDF_TARGET_ESP32
+		default 35 if IDF_TARGET_ESP32S2 || IDF_TARGET_ESP32S3
+		default  2 if IDF_TARGET_ESP32C3 || IDF_TARGET_ESP32C2
+		help
+			GPIO number (IOxx) to SPI MOSI.
+			Some GPIOs are used for other purposes (flash connections, etc.) and cannot be used to MOSI.
+			On the ESP32, GPIOs 35-39 are input-only so cannot be used as outputs.
+			On the ESP32-S2, GPIO 46 is input-only so cannot be used as outputs.
+
+	config CE_GPIO
+		int "CE GPIO number"
+		range 0 GPIO_RANGE_MAX
+		default 16 if IDF_TARGET_ESP32
+		default 34 if IDF_TARGET_ESP32S2 || IDF_TARGET_ESP32S3
+		default  1 if IDF_TARGET_ESP32C3 || IDF_TARGET_ESP32C2
+		help
+			GPIO number (IOxx) to CE.
+			Some GPIOs are used for other purposes (flash connections, etc.) and cannot be used to CE.
+			On the ESP32, GPIOs 35-39 are input-only so cannot be used as outputs.
+			On the ESP32-S2, GPIO 46 is input-only so cannot be used as outputs.
+
+	config CSN_GPIO
+		int "CSN GPIO number"
+		range 0 GPIO_RANGE_MAX
+		default 17 if IDF_TARGET_ESP32
+		default 33 if IDF_TARGET_ESP32S2 || IDF_TARGET_ESP32S3
+		default  0 if IDF_TARGET_ESP32C3 || IDF_TARGET_ESP32C2
+		help
+			GPIO number (IOxx) to CSN.
+			Some GPIOs are used for other purposes (flash connections, etc.) and cannot be used to CSN.
+			On the ESP32, GPIOs 35-39 are input-only so cannot be used as outputs.
+			On the ESP32-S2, GPIO 46 is input-only so cannot be used as outputs.
+
+	config IRQ_GPIO
+		int "IRQ GPIO number"
+		range 0 GPIO_RANGE_MAX
+		default 15 if IDF_TARGET_ESP32
+		default 38 if IDF_TARGET_ESP32S2 || IDF_TARGET_ESP32S3
+		default  5 if IDF_TARGET_ESP32C3 || IDF_TARGET_ESP32C2
+		help
+			GPIO number (IOxx) to IRQ.
+			Some GPIOs are used for other purposes (flash connections, etc.) and cannot be used to MISO.
+			On the ESP32, GPIOs 35-39 are input-only so cannot be used as outputs.
+			On the ESP32-S2, GPIO 46 is input-only so cannot be used as outputs.
+
+	config RETRANSMIT_DELAY
+		depends on ADVANCED
+		int "Auto Retransmit Delay"
+		range 0 15
+		default 0
+		help
+			Set Auto Retransmit Delay.
+			Delay = value * 250us.
+
+	choice SPI_HOST
+		prompt "SPI peripheral that controls this bus"
+		default SPI2_HOST
+		help
+			Select SPI peripheral that controls this bus.
+		config SPI2_HOST
+			bool "SPI2_HOST"
+			help
+				Use SPI2_HOST. This is also called HSPI_HOST.
+		config SPI3_HOST
+			depends on IDF_TARGET_ESP32 || IDF_TARGET_ESP32S2 || IDF_TARGET_ESP32S3
+			bool "SPI3_HOST"
+			help
+				USE SPI3_HOST. This is also called VSPI_HOST
+	endchoice
+
+endmenu 
+
+menu "SPIFFS menu"
+
+    config EXAMPLE_SPIFFS_CHECK_ON_START
+        bool "Run SPIFFS_check on every start-up"
+        default y
+        help
+            If this config item is set, esp_spiffs_check() will be run on every start-up.
+            Slow on large flash sizes.
+endmenu
+
+menu "TEST menu"
+
+    config RUN_TESTS
+        bool "flash test scenarios"
+        default n
+        help
+            If this config item is set, tests are run on every start up, ONLY FOR TESTING
+
+	config TEST_LOGGER
+        bool "run logger tests"
+        default n
+        depends on RUN_TESTS
+        help
+            If this config item is set, logger tests will be run
+
+	config TEST_SPIFFS
+        bool "run SPIFFS tests"
+        default n
+        depends on RUN_TESTS
+        help
+            If this config item is set, SPIFFS tests will be run
+
+	config TEST_ACCESS
+        bool "run access tests"
+        default n
+        depends on RUN_TESTS
+        help
+            If this config item is set, access tests will be run
+
+	config TEST_SQL_SERVER
+		bool "run SQL Server tests"
+		default n
+		depends on RUN_TESTS
+		help
+			If this config item is set, SQL server tests will be run
+
+endmenu
+
